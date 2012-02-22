@@ -1,0 +1,22 @@
+# IDEA project files
+.idea/
+.idea
+*.iml
+
+# Eclipse project files
+.classpath
+.project
+.settings/
+
+# Output dirs
+target/
+target
+out/
+
+
+# Log files
+*.log
+
+# Gradle files
+.gradle
+.gradle/

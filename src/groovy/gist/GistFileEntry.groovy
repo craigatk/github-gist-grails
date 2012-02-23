@@ -7,4 +7,8 @@ class GistFileEntry {
   String getContent() {
     contentLines.join("\n")
   }
+  
+  String toString() {
+    content
+  }
 }

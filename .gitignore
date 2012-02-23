@@ -1,5 +1,6 @@
 # IDEA project files
 .idea
+.idea/*
 *.iml
 
 # Eclipse project files
@@ -9,6 +10,7 @@
 
 # Output dirs
 target
+target/*
 out/
 
 

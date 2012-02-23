@@ -1,5 +1,4 @@
 # IDEA project files
-.idea/
 .idea
 *.iml
 
@@ -9,7 +8,6 @@
 .settings/
 
 # Output dirs
-target/
 target
 out/
 
@@ -19,4 +17,3 @@ out/
 
 # Gradle files
 .gradle
-.gradle/

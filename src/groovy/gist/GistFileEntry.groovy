@@ -1,6 +1,10 @@
 package gist
 
 class GistFileEntry {
-  String content
   String id
+  List<String> contentLines = []
+  
+  String getContent() {
+    contentLines.join("\n")
+  }
 }

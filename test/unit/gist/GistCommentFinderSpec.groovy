@@ -41,40 +41,4 @@ class GistCommentFinderSpec extends UnitSpec {
     """// <gist id="123">"""  | "123"
     "<gist id='12'>"          | "12"
   }
-
-  static String oneLineGist = "Some gist content"
-  static String twoLineGist = oneLineGist + "\n" + oneLineGist
-
-  def "should get gists content from text"() {
-    expect:
-    gistCommentFinder.findGistsInText(text)*.contentLines == gists
-
-    where:
-    text                          | gists
-    createGistText(oneLineGist)   | [[oneLineGist]]
-    createGistText(twoLineGist)   | [[oneLineGist, oneLineGist]]
-  }
-
-  def "should get gist id from text"() {
-    expect:
-    gistCommentFinder.findGistsInText(text)*.id == gistIds
-
-    where:
-    text                  | gistIds
-    createGistWithId("123") | ["123"]
-  }
-
-  private String createGistText(String innerText) {
-    """
-// <gist>
-${innerText}
-// </gist>"""
-  }
-
-  private String createGistWithId(String id) {
-    """
-// <gist id="${id}">
-Some text
-// </gist>"""
-  }
 }

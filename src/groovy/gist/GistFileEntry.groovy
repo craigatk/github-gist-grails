@@ -4,7 +4,7 @@ class GistFileEntry {
   String id
   List<String> contentLines = []
   File file
-  Integer gistStartLineNumber
+  Integer gistStartLineIndex
 
   String getContent() {
     contentLines.join("\n")

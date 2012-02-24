@@ -17,7 +17,7 @@ class GistFileUpdaterIntegrationTests {
     
     file.text = createGistText()
     
-    GistFileEntry gistFileEntry = gistCommentFinder.findGistsInText(file.text, file)[0]
+    GistFileEntry gistFileEntry = gistCommentFinder.findGistsInFile(file)[0]
     gistFileEntry.id = id
     
     gistFileUpdater.updateGistFileEntry(gistFileEntry)
@@ -34,7 +34,7 @@ class GistFileUpdaterIntegrationTests {
 
     file.text = createGistText() + createGistText()   
     
-    def gistFileEntries = gistCommentFinder.findGistsInText(file.text, file)
+    def gistFileEntries = gistCommentFinder.findGistsInFile(file)
     assert gistFileEntries?.size() == 2
     
     gistFileEntries[0].id = id1

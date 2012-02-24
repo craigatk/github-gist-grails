@@ -11,7 +11,7 @@ class GistFinder {
     
     filesInDir.each { file ->
       if (!file.isDirectory()) {
-        gists.addAll(gistCommentFinder.findGistsInText(file.text, file))
+        gists.addAll(gistCommentFinder.findGistsInFile(file))
       } else {
         gists.addAll(findGistsInDir(file))
       } 

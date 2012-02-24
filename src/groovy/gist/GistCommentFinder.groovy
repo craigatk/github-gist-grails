@@ -1,18 +1,18 @@
 package gist
 
 class GistCommentFinder {
-  List<GistFileEntry> findGistsInText(String text, File file = null) {
+  List<GistFileEntry> findGistsInFile(File file) {
     def gists = []
     
     GistFileEntry gistFileEntry = null
 
-    def lines = text.readLines()
-    
-    lines.eachWithIndex { line, index ->
+    file.eachLine(0) { String line, index ->
       if (lineHasStartingTag(line)) {
         String gistId = getGistIdFromLine(line)
         
-        gistFileEntry = new GistFileEntry(file: file, gistStartLineNumber: index)
+        gistFileEntry = new GistFileEntry(
+            file: file,
+            gistStartLineIndex: index)
         
         if (gistId) {
           gistFileEntry.id = gistId

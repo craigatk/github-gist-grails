@@ -24,9 +24,8 @@ class GistCommentFinderIntegrationTests {
     def gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
     assert gistsFromFile.size() == 1
     
-    def gistContentLines = gistsFromFile[0].contentLines
-    
-    assert gistContentLines == [oneLineGist]
+    assert gistsFromFile[0].contentLines == [oneLineGist]
+    assert gistsFromFile[0].status == GistStatus.NEW
   }
 
   @Test
@@ -36,9 +35,7 @@ class GistCommentFinderIntegrationTests {
     def gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
     assert gistsFromFile.size() == 1
 
-    def gistContentLines = gistsFromFile[0].contentLines
-
-    assert gistContentLines == [oneLineGist, oneLineGist]
+    assert gistsFromFile[0].contentLines == [oneLineGist, oneLineGist]
   }
 
   @Test
@@ -51,6 +48,7 @@ class GistCommentFinderIntegrationTests {
     assert gistsFromFile.size() == 1
 
     assert gistsFromFile[0].id == id
+    assert gistsFromFile[0].status == GistStatus.UPLOADED
   }
 
   @Test

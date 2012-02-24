@@ -16,6 +16,9 @@ class GistCommentFinder {
         
         if (gistId) {
           gistFileEntry.id = gistId
+          gistFileEntry.status = GistStatus.UPLOADED
+        } else {
+          gistFileEntry.status = GistStatus.NEW
         }
       } else if (lineHasEndingTag(line)) {
         gists << gistFileEntry

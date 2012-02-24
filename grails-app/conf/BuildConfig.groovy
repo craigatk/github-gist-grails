@@ -28,6 +28,10 @@ grails.project.dependency.resolution = {
     // runtime 'mysql:mysql-connector-java:5.1.5'
 
     compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:1.3.0'
+
+    test('org.gmock:gmock:0.8.2') {
+      excludes 'junit'
+    }
   }
 
   plugins {

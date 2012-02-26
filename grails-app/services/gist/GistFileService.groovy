@@ -6,8 +6,8 @@ class GistFileService {
   GistFinder gistFinder = new GistFinder()
   GistUploadService gistUploadService
 
-  def serviceMethod() {
-    println("Running service method")
+  def serviceMethod(String password) {
+    println("Running service method with password [${password}]")
   }
 
   def processNewGistsInDirectories(List<String> dirNames) {

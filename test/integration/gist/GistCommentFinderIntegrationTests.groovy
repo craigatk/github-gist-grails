@@ -26,6 +26,7 @@ class GistCommentFinderIntegrationTests {
     
     assert gistsFromFile[0].contentLines == [oneLineGist]
     assert gistsFromFile[0].status == GistStatus.NEW
+    assert gistsFromFile[0].isPublic
   }
 
   @Test
@@ -42,13 +43,33 @@ class GistCommentFinderIntegrationTests {
   void shouldGetGistIdFromFile() {
     final String id = "123"
 
-    gistFile.text = createGistWithId(id)
+    gistFile.text = createGistText("Some text", [id: id])
 
     def gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
     assert gistsFromFile.size() == 1
 
     assert gistsFromFile[0].id == id
     assert gistsFromFile[0].status == GistStatus.UPLOADED
+  }
+
+  @Test
+  void whenNotPublicShouldGetPublicFromFile() {
+    gistFile.text = createGistText("Some text", ['public': 'false'])
+
+    def gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
+    assert gistsFromFile.size() == 1
+
+    assert !gistsFromFile[0].isPublic
+  }
+
+  @Test
+  void whenPublicShouldGetPublicFromFile() {
+    gistFile.text = createGistText("Some text", ['public': 'true'])
+
+    def gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
+    assert gistsFromFile.size() == 1
+
+    assert gistsFromFile[0].isPublic
   }
 
   @Test
@@ -61,17 +82,12 @@ class GistCommentFinderIntegrationTests {
     assert gistsFromFile[0].gistStartLineIndex == 1
   }
 
-  private String createGistText(String innerText) {
+  private String createGistText(String innerText, Map attributes = null) {
+    String gistAttributes = (attributes) ? " " + attributes?.collect { key, value -> " ${key}=\"${value}\"" }.join(" ") : ""
+    
     """
-// <gist>
+// <gist${gistAttributes}>
 ${innerText}
-// </gist>"""
-  }
-
-  private String createGistWithId(String id) {
-    """
-// <gist id="${id}">
-Some text
 // </gist>"""
   }
 }

@@ -8,11 +8,16 @@ class GistCommentFinder {
 
     file.eachLine(0) { String line, index ->
       if (lineHasStartingTag(line)) {
-        String gistId = getGistIdFromLine(line)
+        String gistId = getGistAttributeFromLine(line, "id")
+        
+        String isPublicAttribute = getGistAttributeFromLine(line, "public")
+        Boolean isPublic = (isPublicAttribute) ? Boolean.parseBoolean(isPublicAttribute) : true
         
         gistFileEntry = new GistFileEntry(
             file: file,
-            gistStartLineIndex: index)
+            gistStartLineIndex: index,
+            isPublic: isPublic
+        )
         
         if (gistId) {
           gistFileEntry.id = gistId
@@ -36,10 +41,10 @@ class GistCommentFinder {
     line =~ /<gist.*>/
   }
   
-  String getGistIdFromLine(String line) {
+  String getGistAttributeFromLine(String line, String attribute) {
     String massagedLine = line.substring(line.indexOf('<')) + "</gist>"
-    
-    new XmlSlurper().parseText(massagedLine).@id
+
+    new XmlSlurper().parseText(massagedLine).@"${attribute}"
   }
 
   boolean lineHasEndingTag(String line) {

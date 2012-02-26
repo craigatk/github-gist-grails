@@ -33,7 +33,7 @@ class GistCommentFinderSpec extends UnitSpec {
 
   def "should get gist id from starting tag in line"() {
     expect:
-    gistCommentFinder.getGistIdFromLine(line) == id
+    gistCommentFinder.getGistAttributeFromLine(line, "id") == id
 
     where:
     line                      | id

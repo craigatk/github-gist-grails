@@ -8,16 +8,16 @@ class GistRemoteService {
 
   def grailsApplication
 
-  GistService createGistService(String password) {
-    if (!password) {
-      password = grailsApplication.config.gist.github.password
-    }
-
+  GistService createGistService(GitHubCredentials gitHubCredentials) {
     GistService gistService = new GistService()
 
-    gistService.getClient().setCredentials(gitHubUsername, password)
+    gistService.getClient().setCredentials(gitHubCredentials.username, gitHubCredentials.password)
 
     return gistService
+  }
+
+  String getGitHubPassword() {
+    grailsApplication.config.gist.github.password
   }
 
   String getGitHubUsername() {

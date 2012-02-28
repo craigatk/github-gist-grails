@@ -11,6 +11,14 @@ class GistFileServiceTests {
   GistFinder gistFinder
   GistUploadService gistUploadService
 
+  final String username = "username"
+  final String password = "password"
+
+  final def gitHubCredentials = new GitHubCredentials(
+      username: username,
+      password: password
+  )
+
   @Before
   void setUp() {
     gistFileService = new GistFileService()
@@ -32,12 +40,12 @@ class GistFileServiceTests {
     gistFinder.findGistsInDir(new File("dir2")).returns([newGist2])
     gistFinder.findGistsInDir(new File("dir3")).returns([uploadedGist])
 
-    gistUploadService.uploadNewGist(newGist1)
-    gistUploadService.uploadNewGist(newGist2)
-    gistUploadService.uploadNewGist(uploadedGist).never()
+    gistUploadService.uploadNewGist(newGist1, gitHubCredentials)
+    gistUploadService.uploadNewGist(newGist2, gitHubCredentials)
+    gistUploadService.uploadNewGist(uploadedGist, gitHubCredentials).never()
     
     play {
-      gistFileService.processNewGistsInDirectories(["dir1", "dir2", "dir3"])
+      gistFileService.processNewGistsInDirectories(["dir1", "dir2", "dir3"], username, password)
     }
   }
 }

@@ -10,7 +10,7 @@ class GistUploadService {
   def grailsApplication
   def gistRemoteService
 
-  GistFileEntry uploadNewGist(GistFileEntry gistFileEntry, String password) {
+  GistFileEntry uploadNewGist(GistFileEntry gistFileEntry, GitHubCredentials gitHubCredentials) {
     GistFile gistFile = new GistFile()
     gistFile.content = gistFileEntry.content
     gistFile.filename = gistFileEntry.file.name
@@ -19,7 +19,7 @@ class GistUploadService {
     gist.public = gistFileEntry.isPublic
     gist.setFiles([(gistFileEntry.file.name): gistFile])
 
-    GistService gistService = gistRemoteService.createGistService(password)
+    GistService gistService = gistRemoteService.createGistService(gitHubCredentials)
 
     gist = gistService.createGist(gist)
     

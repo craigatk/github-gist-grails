@@ -10,13 +10,23 @@ class GistUploadService {
   def gistRemoteService
 
   GistFileEntry uploadNewGist(GistFileEntry gistFileEntry, GitHubCredentials gitHubCredentials) {
-    Gist gist = createGistObject(gistFileEntry)
-
     GistService gistService = gistRemoteService.createGistService(gitHubCredentials)
+    
+    Gist gist = createGistObject(gistFileEntry)
 
     gist = gistService.createGist(gist)
     
     gistFileEntry.id = gist.id
+
+    return gistFileEntry
+  }
+  
+  GistFileEntry updateGistContent(GistFileEntry gistFileEntry, GitHubCredentials gitHubCredentials) {
+    GistService gistService = gistRemoteService.createGistService(gitHubCredentials)
+    
+    Gist gist = createGistObject(gistFileEntry)
+    
+    gistService.updateGist(gist)
 
     return gistFileEntry
   }
@@ -29,6 +39,10 @@ class GistUploadService {
     Gist gist = new Gist()
     gist.public = gistFileEntry.isPublic
     gist.setFiles([(gistFileEntry.file.name): gistFile])
+    
+    if (gistFileEntry.id) {
+      gist.id = gistFileEntry.id
+    }
 
     return gist
   }

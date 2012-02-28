@@ -31,7 +31,7 @@ class GistUploadServiceTests {
   }
   
   @Test
-  void shouldUploadGist() {
+  void shouldUploadNewGist() {
     GistService gistService = mock(GistService)
 
     gistRemoteService.createGistService(gitHubCredentials).returns(gistService)
@@ -50,13 +50,31 @@ class GistUploadServiceTests {
   }
   
   @Test
+  void shouldUpdateGist() {
+    GistService gistService = mock(GistService)
+
+    gistRemoteService.createGistService(gitHubCredentials).returns(gistService)
+
+    Gist updatedGist = new Gist(
+        id: "1234"
+    )
+    
+    gistService.updateGist(CoreMatchers.any(Gist)).returns(updatedGist)
+
+    play {
+      gistUploadService.updateGistContent(gistFileEntry, gitHubCredentials)
+    }
+  }
+  
+  @Test
   void whenGistIsPublicShouldCreateGistObject() {
     gistFileEntry.isPublic = true
     
     Gist gist = gistUploadService.createGistObject(gistFileEntry)
     
     assert gist.isPublic()
-    
+    assert !gist.id
+
     def gistFile = gist.files[(gistFileName)]
     assert gistFile
 
@@ -71,5 +89,14 @@ class GistUploadServiceTests {
     Gist gist = gistUploadService.createGistObject(gistFileEntry)
 
     assert !gist.isPublic()
+  }
+  
+  @Test
+  void whenGistHasIdShouldSetIdOnGistObject() {
+    gistFileEntry.id = "1234"
+    
+    Gist gist = gistUploadService.createGistObject(gistFileEntry)
+    
+    assert gist.id == gistFileEntry.id
   }
 }

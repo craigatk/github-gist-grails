@@ -7,10 +7,6 @@ class GistFileService {
   GistFinder gistFinder = new GistFinder()
   GistUploadService gistUploadService
 
-  def serviceMethod(String username, String password) {
-    println("Running service method with username [${username}] and password [${password}]")
-  }
-
   def processNewGistsInDirectories(List<String> dirNames, String username, String password) {
     def gitHubCredentials = new GitHubCredentials(
         username: username,

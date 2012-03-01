@@ -10,6 +10,9 @@ class GithubGistGrailsPlugin {
         "grails-app/views/error.gsp"
     ]
 
+    def environments = 'development'
+    def scopes = [excludes: 'war']
+
     // TODO Fill in these fields
     def title = "Github Gist Plugin" // Headline display name of the plugin
     def author = "Craig Atkinson"

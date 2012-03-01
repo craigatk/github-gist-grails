@@ -37,6 +37,25 @@ class GistCommentFinderIntegrationTests {
 
     assert gistsFromFile[0].contentLines == [oneLineGist, oneLineGist]
   }
+  
+  @Test
+  void whenFullFileGistShouldGetGist() {
+    gistFile.text = """// <gist>
+class TestService {
+
+  def serviceMethod() {
+    println "In service method"
+  }
+}
+// </gist>
+"""
+    
+    def gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
+    assert gistsFromFile.size() == 1
+
+    assert gistsFromFile[0].contentLines.size() == 6
+    assert gistsFromFile[0].contentLines[5] == "}"
+  }
 
   @Test
   void shouldGetGistIdFromFile() {

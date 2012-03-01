@@ -25,7 +25,6 @@ class GistCommentFinderIntegrationTests {
     assert gistsFromFile.size() == 1
     
     assert gistsFromFile[0].contentLines == [oneLineGist]
-    assert gistsFromFile[0].status == GistStatus.NEW
     assert gistsFromFile[0].isPublic
   }
 
@@ -49,7 +48,6 @@ class GistCommentFinderIntegrationTests {
     assert gistsFromFile.size() == 1
 
     assert gistsFromFile[0].id == id
-    assert gistsFromFile[0].status == GistStatus.UPLOADED
   }
 
   @Test

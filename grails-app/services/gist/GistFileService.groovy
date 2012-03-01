@@ -17,12 +17,14 @@ class GistFileService {
     )
 
     dirNames.each { dirName ->
-      def gists = gistFinder.findGistsInDir(new File(dirName))
+      def gistFileEntries = gistFinder.findGistsInDir(new File(dirName))
       
-      def newGists = gists.findAll { it.status == GistStatus.NEW }
-      
-      newGists.each { newGist ->
-        gistUploadService.uploadNewGist(newGist, gitHubCredentials)
+      gistFileEntries.each { gistFileEntry ->
+        if (gistFileEntry.id) {
+          gistUploadService.updateGistContent(gistFileEntry, gitHubCredentials)
+        } else {
+          gistUploadService.uploadNewGist(gistFileEntry, gitHubCredentials)
+        }
       }
     }
   }

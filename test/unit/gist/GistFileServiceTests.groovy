@@ -32,9 +32,9 @@ class GistFileServiceTests {
 
   @Test
   void shouldProcessNewGists() {
-    def newGist1 = new GistFileEntry(status: GistStatus.NEW)
-    def newGist2 = new GistFileEntry(status: GistStatus.NEW)
-    def uploadedGist = new GistFileEntry(status:  GistStatus.UPLOADED)
+    def newGist1 = new GistFileEntry()
+    def newGist2 = new GistFileEntry()
+    def uploadedGist = new GistFileEntry(id: "1234")
 
     gistFinder.findGistsInDir(new File("dir1")).returns([newGist1])
     gistFinder.findGistsInDir(new File("dir2")).returns([newGist2])
@@ -42,7 +42,7 @@ class GistFileServiceTests {
 
     gistUploadService.uploadNewGist(newGist1, gitHubCredentials)
     gistUploadService.uploadNewGist(newGist2, gitHubCredentials)
-    gistUploadService.uploadNewGist(uploadedGist, gitHubCredentials).never()
+    gistUploadService.updateGistContent(uploadedGist, gitHubCredentials)
     
     play {
       gistFileService.processNewGistsInDirectories(["dir1", "dir2", "dir3"], username, password)

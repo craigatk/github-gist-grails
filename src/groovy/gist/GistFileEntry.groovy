@@ -5,6 +5,7 @@ class GistFileEntry {
   List<String> contentLines = []
   File file
   Integer gistStartLineIndex
+  String htmlUrl
   Boolean isPublic = true
 
   String getContent() {

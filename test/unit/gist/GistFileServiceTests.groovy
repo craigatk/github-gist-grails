@@ -8,6 +8,7 @@ import org.junit.Test
 class GistFileServiceTests {
   GistFileService gistFileService
 
+  GistFileUpdater gistFileUpdater
   GistFinder gistFinder
   GistUploadService gistUploadService
 
@@ -22,6 +23,9 @@ class GistFileServiceTests {
   @Before
   void setUp() {
     gistFileService = new GistFileService()
+
+    gistFileUpdater = mock(GistFileUpdater)
+    gistFileService.gistFileUpdater = gistFileUpdater
     
     gistFinder = mock(GistFinder)
     gistFileService.gistFinder = gistFinder
@@ -40,9 +44,13 @@ class GistFileServiceTests {
     gistFinder.findGistsInDir(new File("dir2")).returns([newGist2])
     gistFinder.findGistsInDir(new File("dir3")).returns([uploadedGist])
 
-    gistUploadService.uploadNewGist(newGist1, gitHubCredentials)
-    gistUploadService.uploadNewGist(newGist2, gitHubCredentials)
-    gistUploadService.updateGistContent(uploadedGist, gitHubCredentials)
+    gistUploadService.uploadNewGist(newGist1, gitHubCredentials).returns(newGist1)
+    gistFileUpdater.updateGistFileEntry(newGist1)
+
+    gistUploadService.uploadNewGist(newGist2, gitHubCredentials).returns(newGist2)
+    gistFileUpdater.updateGistFileEntry(newGist2)
+
+    gistUploadService.updateGistContent(uploadedGist, gitHubCredentials).returns(uploadedGist)
     
     play {
       gistFileService.processNewGistsInDirectories(["dir1", "dir2", "dir3"], username, password)

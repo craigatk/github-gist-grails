@@ -17,6 +17,7 @@ class GistUploadService {
     gist = gistService.createGist(gist)
     
     gistFileEntry.id = gist.id
+    gistFileEntry.htmlUrl = gist.htmlUrl
 
     return gistFileEntry
   }
@@ -26,7 +27,9 @@ class GistUploadService {
     
     Gist gist = createGistObject(gistFileEntry)
     
-    gistService.updateGist(gist)
+    gist = gistService.updateGist(gist)
+
+    gistFileEntry.htmlUrl = gist.htmlUrl
 
     return gistFileEntry
   }

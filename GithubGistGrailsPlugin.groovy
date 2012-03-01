@@ -15,7 +15,7 @@ class GithubGistGrailsPlugin {
     def author = "Craig Atkinson"
     def authorEmail = "craig.atkinson@objectpartners.com"
     def description = '''\
-Uploads code snippets to GitHub Gists so they can be easily shared in blog posts, etc.
+Uploads code snippets from a Grails project to GitHub Gists so you can easily share tested code in blog posts, etc.
 '''
 
     // URL to the plugin's documentation

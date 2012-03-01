@@ -3,8 +3,8 @@ package gist
 class GistFileService {
   static transactional = false
 
-  GistFinder gistFinder = new GistFinder()
   GistFileUpdater gistFileUpdater = new GistFileUpdater()
+  GistFinder gistFinder = new GistFinder()
   GistUploadService gistUploadService
 
   def serviceMethod(String username, String password) {
@@ -22,14 +22,14 @@ class GistFileService {
       
       gistFileEntries.each { gistFileEntry ->
         if (gistFileEntry.id) {
-          gistUploadService.updateGistContent(gistFileEntry, gitHubCredentials)
+          gistFileEntry = gistUploadService.updateGistContent(gistFileEntry, gitHubCredentials)
 
-          println "Updated existing Gist with ID [${gistFileEntry.id}]"
+          println "Updated Gist with ID ${gistFileEntry.id} at URL ${gistFileEntry.htmlUrl}"
         } else {
           gistFileEntry = gistUploadService.uploadNewGist(gistFileEntry, gitHubCredentials)
           gistFileUpdater.updateGistFileEntry(gistFileEntry)
 
-          println "Created new Gist with ID [${gistFileEntry.id}]"
+          println "Created Gist with ID ${gistFileEntry.id} at URL ${gistFileEntry.htmlUrl}"
         }
       }
     }

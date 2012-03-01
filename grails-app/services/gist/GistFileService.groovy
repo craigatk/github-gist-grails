@@ -4,6 +4,7 @@ class GistFileService {
   static transactional = false
 
   GistFinder gistFinder = new GistFinder()
+  GistFileUpdater gistFileUpdater = new GistFileUpdater()
   GistUploadService gistUploadService
 
   def serviceMethod(String username, String password) {
@@ -22,8 +23,13 @@ class GistFileService {
       gistFileEntries.each { gistFileEntry ->
         if (gistFileEntry.id) {
           gistUploadService.updateGistContent(gistFileEntry, gitHubCredentials)
+
+          println "Updated existing Gist with ID [${gistFileEntry.id}]"
         } else {
-          gistUploadService.uploadNewGist(gistFileEntry, gitHubCredentials)
+          gistFileEntry = gistUploadService.uploadNewGist(gistFileEntry, gitHubCredentials)
+          gistFileUpdater.updateGistFileEntry(gistFileEntry)
+
+          println "Created new Gist with ID [${gistFileEntry.id}]"
         }
       }
     }

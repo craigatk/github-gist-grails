@@ -1,4 +1,4 @@
-class GithubGistGrailsGrailsPlugin {
+class GithubGistGrailsPlugin {
     // the plugin version
     def version = "0.1"
     // the version or versions of Grails the plugin is designed for
@@ -11,20 +11,20 @@ class GithubGistGrailsGrailsPlugin {
     ]
 
     // TODO Fill in these fields
-    def title = "Github Gist Grails Plugin" // Headline display name of the plugin
-    def author = "Your name"
-    def authorEmail = ""
+    def title = "Github Gist Plugin" // Headline display name of the plugin
+    def author = "Craig Atkinson"
+    def authorEmail = "craig.atkinson@objectpartners.com"
     def description = '''\
-Brief summary/description of the plugin.
+Uploads code snippets to GitHub Gists so they can be easily shared in blog posts, etc.
 '''
 
     // URL to the plugin's documentation
-    def documentation = "http://grails.org/plugin/github-gist-grails"
+    def documentation = "http://grails.org/plugin/github-gist"
 
     // Extra (optional) plugin metadata
 
     // License: one of 'APACHE', 'GPL2', 'GPL3'
-//    def license = "APACHE"
+    def license = "APACHE"
 
     // Details of company behind the plugin (if there is one)
 //    def organization = [ name: "My Company", url: "http://www.my-company.com/" ]

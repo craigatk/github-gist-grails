@@ -10,6 +10,7 @@
 
 # Output dirs
 target
+target/
 target/*
 out/
 

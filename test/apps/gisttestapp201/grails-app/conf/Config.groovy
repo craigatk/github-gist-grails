@@ -91,3 +91,7 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
+
+grails.config.locations = [
+    "file:${userHome}/.grails/gists-config.groovy",
+]

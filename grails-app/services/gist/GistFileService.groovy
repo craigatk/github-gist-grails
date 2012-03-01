@@ -18,9 +18,13 @@ class GistFileService {
       
       gistFileEntries.each { gistFileEntry ->
         if (gistFileEntry.id) {
-          gistFileEntry = gistUploadService.updateGistContent(gistFileEntry, gitHubCredentials)
+          if (gistUploadService.gistContentIsUpdated(gistFileEntry, gitHubCredentials)) {
+            gistFileEntry = gistUploadService.updateGistContent(gistFileEntry, gitHubCredentials)
 
-          println "Updated Gist with ID ${gistFileEntry.id} at URL ${gistFileEntry.htmlUrl}"
+            println "Updated Gist with ID ${gistFileEntry.id} at URL ${gistFileEntry.htmlUrl}"  
+          } else {
+            println "Skipped unchanged Gist with ID ${gistFileEntry.id}"
+          }
         } else {
           gistFileEntry = gistUploadService.uploadNewGist(gistFileEntry, gitHubCredentials)
           gistFileUpdater.updateGistFileEntry(gistFileEntry)

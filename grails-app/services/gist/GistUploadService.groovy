@@ -49,4 +49,23 @@ class GistUploadService {
 
     return gist
   }
+
+  boolean gistContentIsUpdated(GistFileEntry gistFileEntry, GitHubCredentials gitHubCredentials) {
+    GistService gistService = gistRemoteService.createGistService(gitHubCredentials)
+    
+    Gist gist = gistService.getGist(gistFileEntry.id)
+    
+    GistFile gistFile = gist.getFiles()[(gistFileEntry.file.name)]
+    
+    String gistContent = gistFile.content
+    String gistFileEntryContent = gistFileEntry.content
+
+    return (gistContent != gistFileEntryContent)
+  }
+  
+  void deleteGist(String gistId, GitHubCredentials gitHubCredentials) {
+    GistService gistService = gistRemoteService.createGistService(gitHubCredentials)
+    
+    gistService.deleteGist(gistId)
+  }
 }

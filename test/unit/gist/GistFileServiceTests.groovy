@@ -38,11 +38,12 @@ class GistFileServiceTests {
   void shouldProcessNewGists() {
     def newGist1 = new GistFileEntry()
     def newGist2 = new GistFileEntry()
-    def uploadedGist = new GistFileEntry(id: "1234")
+    def updatedGist = new GistFileEntry(id: "updated")
+    def existingGist = new GistFileEntry(id: "existing")
 
     gistFinder.findGistsInDir(new File("dir1")).returns([newGist1])
     gistFinder.findGistsInDir(new File("dir2")).returns([newGist2])
-    gistFinder.findGistsInDir(new File("dir3")).returns([uploadedGist])
+    gistFinder.findGistsInDir(new File("dir3")).returns([updatedGist, existingGist])
 
     gistUploadService.uploadNewGist(newGist1, gitHubCredentials).returns(newGist1)
     gistFileUpdater.updateGistFileEntry(newGist1)
@@ -50,8 +51,11 @@ class GistFileServiceTests {
     gistUploadService.uploadNewGist(newGist2, gitHubCredentials).returns(newGist2)
     gistFileUpdater.updateGistFileEntry(newGist2)
 
-    gistUploadService.updateGistContent(uploadedGist, gitHubCredentials).returns(uploadedGist)
-    
+    gistUploadService.gistContentIsUpdated(updatedGist, gitHubCredentials).returns(true)
+    gistUploadService.updateGistContent(updatedGist, gitHubCredentials).returns(updatedGist)
+
+    gistUploadService.gistContentIsUpdated(existingGist, gitHubCredentials).returns(false)
+
     play {
       gistFileService.processNewGistsInDirectories(["dir1", "dir2", "dir3"], username, password)
     }

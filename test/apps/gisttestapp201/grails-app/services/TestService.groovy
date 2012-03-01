@@ -2,7 +2,7 @@
 class TestService {
 
   def serviceMethod() {
-    println "In service method"
+    println "In the service method"
   }
 }
 // </gist>

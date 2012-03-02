@@ -35,7 +35,7 @@ target(main: "Extract new Gists from files and upload them to GitHub") {
   }
 
   def gistFileService = appCtx.getBean('gistFileService')
-  gistFileService.processNewGistsInDirectories(["grails-app", "src", "test"], username, password)
+  gistFileService.processNewGistsInDirectories(["grails-app", "src", "test", "web-app"], username, password)
 }
 
 setDefaultTarget(main)

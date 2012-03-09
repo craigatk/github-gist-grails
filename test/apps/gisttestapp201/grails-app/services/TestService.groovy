@@ -1,4 +1,4 @@
-// <gist id="1946253">
+// <gist id="2006775">
 class TestService {
 
   def serviceMethod() {

@@ -17,6 +17,7 @@ package gist
 
 import org.eclipse.egit.github.core.Gist
 import org.eclipse.egit.github.core.GistFile
+import org.eclipse.egit.github.core.client.RequestException
 import org.eclipse.egit.github.core.service.GistService
 
 class GistUploadService {
@@ -82,5 +83,17 @@ class GistUploadService {
     GistService gistService = gistRemoteService.createGistService(gitHubCredentials)
     
     gistService.deleteGist(gistId)
+  }
+
+  boolean gistExists(GistFileEntry gistFileEntry, GitHubCredentials gitHubCredentials) {
+    GistService gistService = gistRemoteService.createGistService(gitHubCredentials)
+
+    try {
+      gistService.getGist(gistFileEntry.id)
+
+      return true
+    } catch (RequestException requestException) {
+      return false
+    }
   }
 }

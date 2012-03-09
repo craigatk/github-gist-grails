@@ -49,6 +49,26 @@ class GistFileUpdaterIntegrationTests {
     assert file.text.contains("""<gist id="${id2}">""")
   }
   
+  @Test
+  void whenGistHasNewIdShouldUpdateId() {
+    File file = new File("target/newId.txt")
+    
+    file.text = """
+<gist id="oldId">
+content
+</gist>
+    """
+    
+    def gistFileEntries = gistCommentFinder.findGistsInFile(file)
+    assert gistFileEntries.size() == 1
+    
+    gistFileEntries[0].id = "newId"
+
+    gistFileUpdater.updateGistFileEntry(gistFileEntries[0])
+    assert file.text.contains("""<gist id="newId">""")
+    assert !file.text.contains("""<gist id="old">""")
+  }
+  
   private String createGistText() {
     """
 Some text

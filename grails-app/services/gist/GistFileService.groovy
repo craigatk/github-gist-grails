@@ -22,23 +22,34 @@ class GistFileService {
   GistFinder gistFinder = new GistFinder()
   GistUploadService gistUploadService
 
-  def processNewGistsInDirectories(List<String> dirNames, String username, String password) {
+  def processGistsInDirectories(List<String> dirNames, String username, String password) {
     def gitHubCredentials = new GitHubCredentials(
         username: username,
         password: password
     )
+    
+    int numGistsProcessed = 0
 
     dirNames.each { dirName ->
       def gistFileEntries = gistFinder.findGistsInDir(new File(dirName))
       
+      numGistsProcessed += gistFileEntries.size()
+      
       gistFileEntries.each { gistFileEntry ->
         if (gistFileEntry.id) {
-          if (gistUploadService.gistContentIsUpdated(gistFileEntry, gitHubCredentials)) {
-            gistFileEntry = gistUploadService.updateGistContent(gistFileEntry, gitHubCredentials)
-
-            println "Updated Gist with ID ${gistFileEntry.id} at URL ${gistFileEntry.htmlUrl}"  
+          if (gistUploadService.gistExists(gistFileEntry, gitHubCredentials)) {
+            if (gistUploadService.gistContentIsUpdated(gistFileEntry, gitHubCredentials)) {
+              gistFileEntry = gistUploadService.updateGistContent(gistFileEntry, gitHubCredentials)
+  
+              println "Updated Gist with ID ${gistFileEntry.id} at URL ${gistFileEntry.htmlUrl}"  
+            } else {
+              println "Skipped unchanged Gist with ID ${gistFileEntry.id}"
+            }
           } else {
-            println "Skipped unchanged Gist with ID ${gistFileEntry.id}"
+            gistFileEntry = gistUploadService.uploadNewGist(gistFileEntry, gitHubCredentials)
+            gistFileUpdater.updateGistFileEntry(gistFileEntry)
+            
+            println "Re-uploaded missing Gist with new ID ${gistFileEntry.id}"
           }
         } else {
           gistFileEntry = gistUploadService.uploadNewGist(gistFileEntry, gitHubCredentials)
@@ -48,5 +59,7 @@ class GistFileService {
         }
       }
     }
+    
+    println "Processed ${numGistsProcessed} Gists"
   }
 }

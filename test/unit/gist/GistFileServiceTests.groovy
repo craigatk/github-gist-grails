@@ -35,7 +35,7 @@ class GistFileServiceTests {
   }
 
   @Test
-  void shouldProcessNewGists() {
+  void shouldProcessNewAndExistingGists() {
     def newGist1 = new GistFileEntry()
     def newGist2 = new GistFileEntry()
     def updatedGist = new GistFileEntry(id: "updated")
@@ -51,13 +51,31 @@ class GistFileServiceTests {
     gistUploadService.uploadNewGist(newGist2, gitHubCredentials).returns(newGist2)
     gistFileUpdater.updateGistFileEntry(newGist2)
 
+    gistUploadService.gistExists(updatedGist, gitHubCredentials).returns(true)
     gistUploadService.gistContentIsUpdated(updatedGist, gitHubCredentials).returns(true)
     gistUploadService.updateGistContent(updatedGist, gitHubCredentials).returns(updatedGist)
 
+    gistUploadService.gistExists(existingGist, gitHubCredentials).returns(true)
     gistUploadService.gistContentIsUpdated(existingGist, gitHubCredentials).returns(false)
 
     play {
-      gistFileService.processNewGistsInDirectories(["dir1", "dir2", "dir3"], username, password)
+      gistFileService.processGistsInDirectories(["dir1", "dir2", "dir3"], username, password)
+    }
+  }
+
+  @Test
+  void whenGistIdNoLongerExistsShouldCreateNewGist() {
+    def missingGist = new GistFileEntry(id: "missing")
+
+    gistFinder.findGistsInDir(new File("dir1")).returns([missingGist])
+
+    gistUploadService.gistExists(missingGist, gitHubCredentials).returns(false)
+
+    gistUploadService.uploadNewGist(missingGist, gitHubCredentials).returns(missingGist)
+    gistFileUpdater.updateGistFileEntry(missingGist)
+
+    play {
+      gistFileService.processGistsInDirectories(["dir1"], username, password)
     }
   }
 }

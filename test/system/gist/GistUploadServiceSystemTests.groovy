@@ -92,4 +92,22 @@ class GistUploadServiceSystemTests {
 
     assert gistUploadService.gistContentIsUpdated(gistAfterCreate, gitHubCredentials)
   }
+
+  @Test
+  void shouldFindIfGistExists() {
+    GistFileEntry gistFileEntry = new GistFileEntry(
+        contentLines: ["Some test content", "Line 2"],
+        file: new File("ExistingGist.groovy")
+    )
+
+    def gistAfterCreate = gistUploadService.uploadNewGist(gistFileEntry, gitHubCredentials)
+    assert gistAfterCreate.id
+
+    gistIdToDelete = gistAfterCreate.id
+
+    assert gistUploadService.gistExists(gistAfterCreate, gitHubCredentials)
+
+    gistAfterCreate.id = "doesNotExist"
+    assert !gistUploadService.gistExists(gistAfterCreate, gitHubCredentials)
+  }
 }

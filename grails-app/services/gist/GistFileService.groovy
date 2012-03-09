@@ -18,9 +18,17 @@ package gist
 class GistFileService {
   static transactional = false
 
+  GistConfigService gistConfigService
   GistFileUpdater gistFileUpdater = new GistFileUpdater()
   GistFinder gistFinder = new GistFinder()
   GistUploadService gistUploadService
+  def grailsApplication
+
+  def processGists(String username, String password) {
+    def scanningDirs = (gistConfigService.scanLocations) ?: ["grails-app", "src", "test", "web-app"]
+
+    processGistsInDirectories(scanningDirs, username, password)
+  }
 
   def processGistsInDirectories(List<String> dirNames, String username, String password) {
     def gitHubCredentials = new GitHubCredentials(

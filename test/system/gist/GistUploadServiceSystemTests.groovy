@@ -7,7 +7,7 @@ import org.junit.Test
 class GistUploadServiceSystemTests {
   GistUploadService gistUploadService
   
-  GistRemoteService gistRemoteService
+  GistConfigService gistConfigService
 
   GitHubCredentials gitHubCredentials
   
@@ -15,8 +15,8 @@ class GistUploadServiceSystemTests {
 
   @Before
   void setUp() {
-    String username = gistRemoteService.gitHubUsername
-    String password = gistRemoteService.gitHubPassword
+    String username = gistConfigService.gitHubUsername
+    String password = gistConfigService.gitHubPassword
 
     gitHubCredentials = new GitHubCredentials(username: username, password: password)
   }

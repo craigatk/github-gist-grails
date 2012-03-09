@@ -24,7 +24,14 @@ class GistFileUpdater {
     file.withWriter {writer ->
       fileText.eachLine(0) { String line, lineNumber ->
         if (lineNumber == gistFileEntry.gistStartLineIndex) {
-          writer.writeLine(line.replaceFirst("""<gist.*>""", """<gist id="${gistFileEntry.id}">"""))
+          String newGistLine = "<gist"
+          newGistLine += " id=\"${gistFileEntry.id}\""
+          if (!gistFileEntry.isPublic) {
+            newGistLine += " public=\"false\""
+          }
+          newGistLine += ">"
+          
+          writer.writeLine(line.replaceFirst("<gist.*>", newGistLine))
         } else {
           writer.writeLine(line)
         }

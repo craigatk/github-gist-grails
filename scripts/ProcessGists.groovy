@@ -20,22 +20,22 @@ includeTargets << grailsScript('_GrailsBootstrap')
 target(main: "Extract new Gists from files and upload them to GitHub") {
   depends(configureProxy, packageApp, classpath, loadApp, configureApp)
   
-  def gistRemoteService = appCtx.getBean('gistRemoteService')
+  def gistConfigService = appCtx.getBean('gistConfigService')
   
-  String username = gistRemoteService.gitHubUsername
+  String username = gistConfigService.gitHubUsername
 
-  if (!username || username == "{}") {
+  if (!username) {
     username = GrailsConsole.getInstance().reader.readLine("GitHub username: ")
   }
   
-  String password = gistRemoteService.gitHubPassword
+  String password = gistConfigService.gitHubPassword
 
-  if (!password || password == "{}") {
+  if (!password) {
     password = GrailsConsole.getInstance().reader.readLine("GitHub password: ", '*'.toCharacter())  
   }
 
   def gistFileService = appCtx.getBean('gistFileService')
-  gistFileService.processGistsInDirectories(["grails-app", "src", "test", "web-app"], username, password)
+  gistFileService.processGists(username, password)
 }
 
 setDefaultTarget(main)

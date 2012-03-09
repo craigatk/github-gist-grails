@@ -15,17 +15,28 @@
  */
 package gist
 
-import org.eclipse.egit.github.core.service.GistService
-
-
-class GistRemoteService {
+class GistConfigService {
   static transactional = false
 
-  GistService createGistService(GitHubCredentials gitHubCredentials) {
-    GistService gistService = new GistService()
+  def grailsApplication
 
-    gistService.getClient().setCredentials(gitHubCredentials.username, gitHubCredentials.password)
+  String getGitHubPassword() {
+    getConfigParam(grailsApplication.config.gist.github.password)
+  }
 
-    return gistService
+  String getGitHubUsername() {
+    getConfigParam(grailsApplication.config.gist.github.username)
+  }
+  
+  List getScanLocations() {
+    getConfigParam(grailsApplication.config.gist.scan.locations)
+  }
+  
+  private def getConfigParam(def paramValue) {
+    if (paramValue.isEmpty()) {
+      paramValue = null
+    }
+
+    return paramValue
   }
 }

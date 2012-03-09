@@ -69,6 +69,25 @@ content
     assert !file.text.contains("""<gist id="old">""")
   }
   
+  @Test
+  void whenGistIsNotPublicShouldKeepPublicGistAttribute() {
+    File file = new File("target/private.txt")
+
+    file.text = """
+<gist id="theId" public="false">
+content
+</gist>
+"""
+
+    def gistFileEntries = gistCommentFinder.findGistsInFile(file)
+    assert gistFileEntries.size() == 1
+
+    assert !gistFileEntries[0].isPublic
+
+    gistFileUpdater.updateGistFileEntry(gistFileEntries[0])
+    assert file.text.contains("""<gist id="theId" public="false">""")
+  }
+  
   private String createGistText() {
     """
 Some text

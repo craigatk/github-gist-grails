@@ -59,7 +59,7 @@ class GistFileServiceTests {
     gistUploadService.gistContentIsUpdated(existingGist, gitHubCredentials).returns(false)
 
     play {
-      gistFileService.processGistsInDirectories(["dir1", "dir2", "dir3"], username, password)
+      gistFileService.processGistsInDirectories(["dir1", "dir2", "dir3"], gitHubCredentials)
     }
   }
 
@@ -75,7 +75,7 @@ class GistFileServiceTests {
     gistFileUpdater.updateGistFileEntry(missingGist)
 
     play {
-      gistFileService.processGistsInDirectories(["dir1"], username, password)
+      gistFileService.processGistsInDirectories(["dir1"], gitHubCredentials)
     }
   }
 }

@@ -25,17 +25,21 @@ class GistFileService {
   def grailsApplication
 
   def processGists(String username, String password) {
-    def scanningDirs = (gistConfigService.scanLocations) ?: ["grails-app", "src", "test", "web-app"]
-
-    processGistsInDirectories(scanningDirs, username, password)
-  }
-
-  def processGistsInDirectories(List<String> dirNames, String username, String password) {
     def gitHubCredentials = new GitHubCredentials(
         username: username,
         password: password
     )
     
+    if (gistUploadService.validateCredentials(gitHubCredentials)) {
+      def scanningDirs = (gistConfigService.scanLocations) ?: ["grails-app", "src", "test", "web-app"]
+
+      processGistsInDirectories(scanningDirs, gitHubCredentials)
+    } else {
+      println ("ERROR: Bad GitHub username or password")
+    }
+  }
+
+  def processGistsInDirectories(List<String> dirNames, GitHubCredentials gitHubCredentials) {
     int numGistsProcessed = 0
 
     dirNames.each { dirName ->

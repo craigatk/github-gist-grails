@@ -110,4 +110,16 @@ class GistUploadServiceSystemTests {
     gistAfterCreate.id = "doesNotExist"
     assert !gistUploadService.gistExists(gistAfterCreate, gitHubCredentials)
   }
+
+  @Test
+  void whenCorrectUsernameAndPasswordShouldValidateCredentials() {
+    assert gistUploadService.validateCredentials(gitHubCredentials)
+  }
+
+  @Test
+  void whenBadUsernameAndPasswordShouldNotValidateCredentials() {
+    GitHubCredentials badCredentials = new GitHubCredentials(username: "craigatk", password: "wrongpass")
+
+    assert !gistUploadService.validateCredentials(badCredentials)
+  }
 }

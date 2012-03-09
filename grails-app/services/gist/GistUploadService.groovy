@@ -96,4 +96,16 @@ class GistUploadService {
       return false
     }
   }
+
+  boolean validateCredentials(GitHubCredentials gitHubCredentials) {
+    GistService gistService = gistRemoteService.createGistService(gitHubCredentials)
+
+    try {
+      gistService.starredGists
+
+      return true
+    } catch (RequestException re) {
+      return false
+    }
+  }
 }

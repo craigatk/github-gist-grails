@@ -1,51 +1,51 @@
-# GitHub Gist Plugin
+# Grails GitHub Gist Plugin #
 
-## What is a GitHub Gist?
+## What is a GitHub Gist? ##
 GitHub has this wonderful code snippet sharing system called Gists that make it easy to display formatted code on blogs, etc.
 Popular blogging systems like Wordpress have Gist plugins that make it easy to show Gist code snippets on your blog.
 
-## Plugin Description
+## Plugin Description ##
 Creates GitHub Gists from sections of a Grails project so you can use compiled, tested code snippets written from the comfort of your IDE in blogs, etc.
 And when you update your Gists to keep them in sync with the code in your Grails project.
 
-Uses the GitHub Java API to create and update the Gists: https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core
+Uses the [GitHub Java API](https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core) to create and update the Gists.
 
-Installation
-grails install-plugin github-gist
+## Installation ##
+    grails install-plugin github-gist
 
 BuildConfig.groovy:
-compile(":github-gist:0.1")
+    compile(":github-gist:0.1")
 
-Usage
+## Usage ##
 Mark the sections of code you want to upload to create a Gist with starting and ending <gist></gist> XML tags, usually in comments.
 And type of comment doesn't matter (block /* */ vs. line //).
 
-// <gist>
-void myGistMethod() {
-  // Magic happens here
-}
-// </gist>
+    // <gist>
+    void myGistMethod() {
+      // Magic happens here
+    }
+    // </gist>
 
 Then run 'grails process-gists', enter your GitHub username and password, and voila! the Gists are created.
 And the <gist> XML tags are updated with the ID of the newly created Gists, which you'll probably need to share the Gists.
 
 And when you later want to update your Gists, run the same command 'grails process-gists'.
 
-Config parameters
+### Config parameters ###
 
 If you do want to type in your GitHub username and password (or if you want to create/update Gists in an automated build), you can specify your GitHub credentials in Config.groovy parameters:
 
-gist.github.username="myusername"
-gist.github.password="mypassword"
+    gist.github.username="myusername"
+    gist.github.password="mypassword"
 
-Public/Private Gists
+### Public/Private Gists ##
 
 By default, the Gists created are public (for easy sharing on blogs, etc.), but if you so desire you can mark Gists as private by:
 
-// <gist public="false">
-...
-// </gist>
+    // <gist public="false">
+    ...
+    // </gist>
 
-Version History
+## Version History ##
 
 0.1: Initial release

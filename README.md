@@ -1,19 +1,22 @@
 # Grails GitHub Gist Plugin #
 
 ## What is a GitHub Gist? ##
-GitHub has this wonderful code snippet sharing system called [Gists](https://gist.github.com/) that make it easy to display formatted code on blogs, etc.
+GitHub has this handy code snippet sharing system called [Gists](https://gist.github.com/) that make it easy to display formatted code on blogs, etc.
 Popular blogging systems like Wordpress have Gist plugins that make it easy to show Gist code snippets on your blog.
 
 ## Plugin Description ##
-Creates GitHub Gists from sections of a Grails project so you can use compiled, tested code snippets written from the comfort of your IDE in blogs, etc.
-And when you update your Gists to keep them in sync with the code in your Grails project.
+Creates GitHub Gists from sections of a Grails project so you can use compiled and tested code snippets written from the comfort of your IDE in blog articles, etc.
+And when you update the code in your Grails project you can easily keep the corresponding Gists in sync.
 
-Uses the [GitHub Java API](https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core) to create and update the Gists.
+The plugin uses the [GitHub Java API](https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core) to create and update the Gists.
 
 ## Installation ##
+Install the plugin with the 'grails install-plugin' command:
+
     grails install-plugin github-gist
 
-BuildConfig.groovy:
+Or add the plugin definition in BuildConfig.groovy:
+
     compile(":github-gist:0.1")
 
 ## Usage ##

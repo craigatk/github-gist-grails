@@ -1,7 +1,7 @@
 # Grails GitHub Gist Plugin #
 
 ## What is a GitHub Gist? ##
-GitHub has this wonderful code snippet sharing system called Gists that make it easy to display formatted code on blogs, etc.
+GitHub has this wonderful code snippet sharing system called [Gists](https://gist.github.com/) that make it easy to display formatted code on blogs, etc.
 Popular blogging systems like Wordpress have Gist plugins that make it easy to show Gist code snippets on your blog.
 
 ## Plugin Description ##
@@ -28,6 +28,10 @@ And type of comment doesn't matter (block /* */ vs. line //).
 
 Then run 'grails process-gists', enter your GitHub username and password, and voila! the Gists are created.
 And the <gist> XML tags are updated with the ID of the newly created Gists, which you'll probably need to share the Gists.
+
+    > grails process-gists
+    GitHub username: myusername
+    GitHub password: **********
 
 And when you later want to update your Gists, run the same command 'grails process-gists'.
 

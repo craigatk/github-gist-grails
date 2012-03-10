@@ -1,10 +1,10 @@
-GitHub Gist Plugin
+# GitHub Gist Plugin
 
-What is a GitHub Gist?
+## What is a GitHub Gist?
 GitHub has this wonderful code snippet sharing system called Gists that make it easy to display formatted code on blogs, etc.
 Popular blogging systems like Wordpress have Gist plugins that make it easy to show Gist code snippets on your blog.
 
-Plugin Description
+## Plugin Description
 Creates GitHub Gists from sections of a Grails project so you can use compiled, tested code snippets written from the comfort of your IDE in blogs, etc.
 And when you update your Gists to keep them in sync with the code in your Grails project.
 

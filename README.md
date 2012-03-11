@@ -2,7 +2,7 @@
 
 ## What is a GitHub Gist? ##
 GitHub has this handy code snippet sharing system called [Gists](https://gist.github.com/) that make it easy to display formatted code on blogs, etc.
-You can easily embed Gists into your blog (Wordpress, etc.) with a simple JavaScript <script> tag.
+You can easily embed Gists into your blog (Wordpress, etc.) with a simple JavaScript script tag.
 
 ## Plugin Description ##
 Creates GitHub Gists from sections of a Grails project so you can use compiled and tested code snippets written from the comfort of your IDE in blog articles, etc.

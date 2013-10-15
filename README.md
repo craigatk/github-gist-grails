@@ -11,13 +11,9 @@ And when you update the code in your Grails project you can easily keep the corr
 The plugin uses the [GitHub Java API](https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core) to create and update the Gists.
 
 ## Installation ##
-Install the plugin with the 'grails install-plugin' command:
+Add the plugin definition in BuildConfig.groovy:
 
-    grails install-plugin github-gist
-
-Or add the plugin definition in BuildConfig.groovy:
-
-    compile(":github-gist:0.1")
+    compile ":github-gist:0.2"
 
 ## Usage ##
 Mark the sections of code you want to upload to create a Gist with starting and ending <gist></gist> XML tags, usually in comments.
@@ -55,4 +51,5 @@ By default, the Gists created are public (for easy sharing on blogs, etc.), but 
 
 ## Version History ##
 
-0.1: Initial release
+* 0.2: Updated to Grails v2.2.4 and GitHub API v2.1.5 to work correctly with GitHub
+* 0.1: Initial release

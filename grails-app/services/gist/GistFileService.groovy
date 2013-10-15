@@ -31,7 +31,7 @@ class GistFileService {
     )
     
     if (gistUploadService.validateCredentials(gitHubCredentials)) {
-      def scanningDirs = (gistConfigService.scanLocations) ?: ["grails-app", "src", "test", "web-app"]
+      def scanningDirs = (gistConfigService.scanLocations) ?: ["grails-app", "src", "test", "web-app", "."]
 
       processGistsInDirectories(scanningDirs, gitHubCredentials)
     } else {

@@ -1,16 +1,15 @@
 package gist
 
-import org.junit.Test
+import spock.lang.Specification
 
-
-class GistFileUpdaterIntegrationTests {
+class GistFileUpdaterIntegrationSpec extends Specification {
   GistFileUpdater gistFileUpdater = new GistFileUpdater()
   GistCommentFinder gistCommentFinder = new GistCommentFinder()
 
   final String gistLine1 = "Gist line 1"
   
-  @Test
   void whenNewGistShouldUpdateIdInFile() {
+    given:
     String id = "123"
     
     File file = new File("target/idUpdate.txt")
@@ -19,14 +18,16 @@ class GistFileUpdaterIntegrationTests {
     
     GistFileEntry gistFileEntry = gistCommentFinder.findGistsInFile(file)[0]
     gistFileEntry.id = id
-    
+
+    when:
     gistFileUpdater.updateGistFileEntry(gistFileEntry)
-    
+
+    then:
     assert file.text.contains("""<gist id="123">""")
   }
   
-  @Test
   void whenTwoNewGistsShouldUpdateIdsInFile() {
+    given:
     final String id1 = "123"
     final String id2 = "456"
     
@@ -39,18 +40,24 @@ class GistFileUpdaterIntegrationTests {
     
     gistFileEntries[0].id = id1
     gistFileEntries[1].id = id2
-    
+
+    when:
     gistFileUpdater.updateGistFileEntry(gistFileEntries[0])
+
+    then:
     assert file.text.contains("""<gist id="${id1}">""")
     assert !file.text.contains("""<gist id="${id2}">""")
 
+    when:
     gistFileUpdater.updateGistFileEntry(gistFileEntries[1])
+
+    then:
     assert file.text.contains("""<gist id="${id1}">""")
     assert file.text.contains("""<gist id="${id2}">""")
   }
   
-  @Test
   void whenGistHasNewIdShouldUpdateId() {
+    given:
     File file = new File("target/newId.txt")
     
     file.text = """
@@ -64,13 +71,16 @@ content
     
     gistFileEntries[0].id = "newId"
 
+    when:
     gistFileUpdater.updateGistFileEntry(gistFileEntries[0])
+
+    then:
     assert file.text.contains("""<gist id="newId">""")
     assert !file.text.contains("""<gist id="old">""")
   }
   
-  @Test
   void whenGistIsNotPublicShouldKeepPublicGistAttribute() {
+    given:
     File file = new File("target/private.txt")
 
     file.text = """
@@ -84,7 +94,10 @@ content
 
     assert !gistFileEntries[0].isPublic
 
+    when:
     gistFileUpdater.updateGistFileEntry(gistFileEntries[0])
+
+    then:
     assert file.text.contains("""<gist id="theId" public="false">""")
   }
   

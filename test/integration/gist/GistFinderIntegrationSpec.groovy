@@ -1,10 +1,8 @@
 package gist
-
 import org.apache.commons.io.FileUtils
-import org.junit.Before
-import org.junit.Test
+import spock.lang.Specification
 
-class GistFinderIntegrationTests {
+class GistFinderIntegrationSpec extends Specification {
   final String testDirPath = "target/gists"
   final String testSubDirPath = "${testDirPath}/subdir"
   
@@ -13,8 +11,7 @@ class GistFinderIntegrationTests {
   final String gistLine1 = "Gist line 1"
   final String gistLine2 = "Gist line 2"
   
-  @Before
-  void createTestDirs() {
+  def setup() {
     File testDir = new File(testDirPath)
     FileUtils.deleteDirectory(testDir)
     testDir.mkdirs()
@@ -24,14 +21,17 @@ class GistFinderIntegrationTests {
     testSubDir.mkdirs()
   }
   
-  @Test
   void whenOneFileWithOneGistShouldFindGist() {
+    given:
     File fileWithOneGist = new File(testDirPath, "oneGist.txt")
 
     writeGistToFile(fileWithOneGist)
-    
+
+    when:
     def gists = gistFinder.findGistsInDir(new File(testDirPath))
-    
+
+
+    then:
     assert gists?.size() == 1
     
     def gist = gists[0]
@@ -39,14 +39,17 @@ class GistFinderIntegrationTests {
     assert gist.contentLines == [gistLine1, gistLine2]
   }
   
-  @Test
   void whenOneFileInSubDirWithOneGistShouldFindGist() {
+    given:
     File fileWithOneGist = new File(testSubDirPath, "oneGist.txt")
 
     writeGistToFile(fileWithOneGist)
 
+    when:
     def gists = gistFinder.findGistsInDir(new File(testDirPath))
 
+
+    then:
     assert gists?.size() == 1
 
     def gist = gists[0]

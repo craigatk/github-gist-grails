@@ -1,17 +1,13 @@
 package gist
-
 import org.eclipse.egit.github.core.Gist
 import org.eclipse.egit.github.core.service.GistService
-import org.gmock.WithGMock
-import org.hamcrest.CoreMatchers
-import org.junit.Before
-import org.junit.Test
+import spock.lang.Specification
 
-@WithGMock
-class GistUploadServiceTests {
+class GistUploadServiceSpec extends Specification {
   GistUploadService gistUploadService
   
   GistRemoteService gistRemoteService
+  GistService gistService
 
   final def gitHubCredentials = new GitHubCredentials(username: "username", password: "password")
 
@@ -22,56 +18,56 @@ class GistUploadServiceTests {
       file: new File(gistFileName)
   )
   
-  @Before
-  void setUp() {
+  void setup() {
     gistUploadService = new GistUploadService()
     
-    gistRemoteService = mock(GistRemoteService)
+    gistRemoteService = Mock()
     gistUploadService.gistRemoteService = gistRemoteService
+
+    gistService = Mock()
   }
   
-  @Test
-  void shouldUploadNewGist() {
-    GistService gistService = mock(GistService)
-
-    gistRemoteService.createGistService(gitHubCredentials).returns(gistService)
-
+  def "should upload new Gist"() {
+    given:
     Gist updatedGist = new Gist(
         id: "1234"
     )
-    
-    gistService.createGist(CoreMatchers.any(Gist)).returns(updatedGist)
-    
-    play {
-      gistUploadService.uploadNewGist(gistFileEntry, gitHubCredentials)  
-    }
 
+    when:
+    gistUploadService.uploadNewGist(gistFileEntry, gitHubCredentials)
+
+    then:
+    1 * gistRemoteService.createGistService(gitHubCredentials) >> gistService
+    1 * gistService.createGist(_ as Gist) >> updatedGist
+    0 * _
+
+    and:
     assert gistFileEntry.id == "1234"
   }
   
-  @Test
-  void shouldUpdateGist() {
-    GistService gistService = mock(GistService)
-
-    gistRemoteService.createGistService(gitHubCredentials).returns(gistService)
-
+  void "should update Gist"() {
+    given:
     Gist updatedGist = new Gist(
         id: "1234"
     )
-    
-    gistService.updateGist(CoreMatchers.any(Gist)).returns(updatedGist)
 
-    play {
-      gistUploadService.updateGistContent(gistFileEntry, gitHubCredentials)
-    }
+    when:
+    gistUploadService.updateGistContent(gistFileEntry, gitHubCredentials)
+
+    then:
+    1 * gistRemoteService.createGistService(gitHubCredentials) >> gistService
+    1 * gistService.updateGist(_ as Gist) >> updatedGist
+    0 * _
   }
   
-  @Test
-  void whenGistIsPublicShouldCreateGistObject() {
+  void "when Gist is public should create Gist object"() {
+    given:
     gistFileEntry.isPublic = true
-    
+
+    when:
     Gist gist = gistUploadService.createGistObject(gistFileEntry)
-    
+
+    then:
     assert gist.isPublic()
     assert !gist.id
 
@@ -82,21 +78,25 @@ class GistUploadServiceTests {
     assert gistFile.filename == gistFileName
   }
   
-  @Test
-  void whenGistIsPrivateShouldCreateGistObject() {
+  void "when Gist is private should create Gist object"() {
+    given:
     gistFileEntry.isPublic = false
 
+    when:
     Gist gist = gistUploadService.createGistObject(gistFileEntry)
 
+    then:
     assert !gist.isPublic()
   }
   
-  @Test
-  void whenGistHasIdShouldSetIdOnGistObject() {
+  void "when Gist has ID should set ID on Gist object"() {
+    given:
     gistFileEntry.id = "1234"
-    
+
+    when:
     Gist gist = gistUploadService.createGistObject(gistFileEntry)
-    
+
+    then:
     assert gist.id == gistFileEntry.id
   }
 }

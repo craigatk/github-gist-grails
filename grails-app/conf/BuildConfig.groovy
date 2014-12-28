@@ -36,11 +36,6 @@ grails.project.dependency.resolution = {
     compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
 
     test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
-
-    test('org.gmock:gmock:0.8.3') {
-      excludes 'junit'
-      export = false
-    }
   }
 
   plugins {

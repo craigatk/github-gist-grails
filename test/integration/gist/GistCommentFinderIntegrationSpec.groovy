@@ -1,9 +1,8 @@
 package gist
 
-import org.junit.Before
-import org.junit.Test
+import spock.lang.Specification
 
-class GistCommentFinderIntegrationTests {
+class GistCommentFinderIntegrationSpec extends Specification {
   static String oneLineGist = "Some gist content"
   static String twoLineGist = oneLineGist + "\n" + oneLineGist
 
@@ -11,35 +10,40 @@ class GistCommentFinderIntegrationTests {
   
   File gistFile
   
-  @Before
-  void createFile() {
+  def setup() {
     gistFile = new File("target/gistCommentFinder.txt")
     gistFile.text = ""
   }
   
-  @Test
-  void whenOneLineGistInFileShouldGetGist() {
+  void 'when one-line Gist in file should get Gist'() {
+    given:
     gistFile.text = createGistText(oneLineGist)
-    
+
+    when:
     def gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
+
+    then:
     assert gistsFromFile.size() == 1
     
     assert gistsFromFile[0].contentLines == [oneLineGist]
     assert gistsFromFile[0].isPublic
   }
 
-  @Test
-  void whenTwoLineGistInFileShouldGetGist() {
+  void 'when two-line Gist in file should get Gist'() {
+    given:
     gistFile.text = createGistText(twoLineGist)
 
-    def gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
+    when:
+    List<GistFileEntry> gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
+
+    then:
     assert gistsFromFile.size() == 1
 
     assert gistsFromFile[0].contentLines == [oneLineGist, oneLineGist]
   }
   
-  @Test
-  void whenFullFileGistShouldGetGist() {
+  void 'when full file Gist should get Gist'() {
+    given:
     gistFile.text = """// <gist>
 class TestService {
 
@@ -49,51 +53,66 @@ class TestService {
 }
 // </gist>
 """
-    
-    def gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
+
+    when:
+    List<GistFileEntry> gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
+
+    then:
     assert gistsFromFile.size() == 1
 
     assert gistsFromFile[0].contentLines.size() == 6
     assert gistsFromFile[0].contentLines[5] == "}"
   }
 
-  @Test
-  void shouldGetGistIdFromFile() {
+  void 'should get Gist ID from file'() {
+    given:
     final String id = "123"
 
     gistFile.text = createGistText("Some text", [id: id])
 
-    def gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
+    when:
+    List<GistFileEntry> gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
+
+    then:
     assert gistsFromFile.size() == 1
 
     assert gistsFromFile[0].id == id
   }
 
-  @Test
-  void whenNotPublicShouldGetPublicFromFile() {
+  void 'when not public should get public from file'() {
+    given:
     gistFile.text = createGistText("Some text", ['public': 'false'])
 
-    def gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
+    when:
+    List<GistFileEntry> gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
+
+    then:
     assert gistsFromFile.size() == 1
 
     assert !gistsFromFile[0].isPublic
   }
 
-  @Test
-  void whenPublicShouldGetPublicFromFile() {
+  void 'when public should get public from file'() {
+    given:
     gistFile.text = createGistText("Some text", ['public': 'true'])
 
-    def gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
+    when:
+    List<GistFileEntry> gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
+
+    then:
     assert gistsFromFile.size() == 1
 
     assert gistsFromFile[0].isPublic
   }
 
-  @Test
-  void shouldGetGistStartingLineFromFile() {
+  void 'should get Gist starting line from file'() {
+    given:
     gistFile.text = createGistText(oneLineGist)
 
-    def gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
+    when:
+    List<GistFileEntry> gistsFromFile = gistCommentFinder.findGistsInFile(gistFile)
+
+    then:
     assert gistsFromFile.size() == 1
 
     assert gistsFromFile[0].gistStartLineIndex == 1
